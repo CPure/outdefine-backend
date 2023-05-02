@@ -9,9 +9,8 @@ const readDictionary = () => {
 const DICTIONARY = readDictionary()
 
 const checkWord = (word) => {
-    const hasAnyError = hasRepeatingCharacters(word) || isMissingVowels(word) || hasMixedCasing(word)
 
-    if (hasAnyError) {
+    if( isMissingVowels(word) || hasMixedCasing(word)){
         return null
     }
     if (DICTIONARY.has(word)) {
@@ -20,6 +19,9 @@ const checkWord = (word) => {
     const suggestions = getSuggestions(word)
     if (suggestions.length > 0) {
         return { "suggestions": suggestions, "correct": false }
+    }
+    if(hasRepeatingCharacters(word)){
+        return null
     }
 }
 const hasRepeatingCharacters = (word) => {
@@ -31,7 +33,6 @@ const hasRepeatingCharacters = (word) => {
 
 
 const isMissingVowels = (word) => {
-
     const vowels = ['a', 'e', 'i', 'o', 'u']
     let misspelled = false
 
@@ -42,7 +43,7 @@ const isMissingVowels = (word) => {
                 missingVowels++
             }
         }
-        if (missingVowels === 1) {
+        if (missingVowels > 0 && missingVowels === word.length) {
             misspelled = true
         }
     }
@@ -59,7 +60,7 @@ const hasMixedCasing = (word) => {
                 return true
             }
         }
-    }
+    }    
     return false
 }
 
@@ -67,7 +68,7 @@ const hasMixedCasing = (word) => {
 const getSuggestions = (word) => {
     const suggestions = []
     const alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < word.length; i++) {       
         for (let j = 0; j < alphabet.length; j++) {
             const candidate = word.slice(0, i) + alphabet[j] + word.slice(i + 1)
             if (DICTIONARY.has(candidate)) {
@@ -75,6 +76,12 @@ const getSuggestions = (word) => {
             }
         }
     }
+   /* for (let j = 0; j < alphabet.length; j++) {
+        const candidate = word.slice(0, -1) + alphabet[j] + word.slice(-1)
+        if (DICTIONARY.has(candidate)) {
+            suggestions.push(candidate)
+        }
+    }*/
     return suggestions
 }
 
