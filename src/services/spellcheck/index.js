@@ -11,7 +11,6 @@ const DICTIONARY = readDictionary()
 const checkWord = (word) => {
     const hasAnyError = hasRepeatingCharacters(word) || isMissingVowels(word) || hasMixedCasing(word)
 
-    console.log(hasRepeatingCharacters(word))
     if (hasAnyError) {
         return null
     }

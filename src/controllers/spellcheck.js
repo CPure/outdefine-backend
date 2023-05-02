@@ -7,7 +7,7 @@ const getSpellcheckWord = async (req, res) => {
     if (!result) {
         return res.status(404).send({})
     }
-    console.log(result)
+
     return res.status(200).send(result)
 
 }
