@@ -2,7 +2,7 @@ const spellcheckService = require('../services/spellcheck')
 const getSpellcheckWord = async (req, res) => {
 
     const word = req.params.word
-
+    console.log(word)
     const result = spellcheckService.checkWord(word)
     if (!result) {
         return res.status(404).send({})
