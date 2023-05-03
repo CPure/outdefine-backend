@@ -1,7 +1,9 @@
 const fs = require('fs')
 
+const DICTIONARY_PATH = './src/files/dictionary.txt'
+
 const readDictionary = () => {
-    const data = fs.readFileSync(`${__dirname}\\dictionary.txt`, 'utf8')
+    const data = fs.readFileSync(DICTIONARY_PATH, 'utf8')
     const dictionary = new Set(data.split('\n').map(word => word.trim().toLowerCase()))
     return dictionary
 }
