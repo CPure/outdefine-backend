@@ -1,6 +1,8 @@
 const fs = require('fs')
 
-const DICTIONARY_PATH = './src/files/dictionary.txt'
+const path = require('path');
+const DICTIONARY_PATH = path.join(__dirname, '../../files/dictionary.txt');
+
 
 const readDictionary = () => {
     const data = fs.readFileSync(DICTIONARY_PATH, 'utf8')
