@@ -10,7 +10,7 @@ const DICTIONARY = readDictionary()
 
 const checkWord = (word) => {
 
-    if( isMissingVowels(word) || hasMixedCasing(word)){
+    if( hasMixedCasing(word)){
         return null
     }
     if (DICTIONARY.has(word)) {
@@ -20,7 +20,7 @@ const checkWord = (word) => {
     if (suggestions.length > 0) {
         return { "suggestions": suggestions, "correct": false }
     }
-    if(hasRepeatingCharacters(word)){
+    if(hasRepeatingCharacters(word) || isMissingVowels(word)){
         return null
     }
 }
@@ -68,23 +68,39 @@ const hasMixedCasing = (word) => {
 const getSuggestions = (word) => {
     const suggestions = []
     const alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    for (let i = 0; i < word.length; i++) {       
-        for (let j = 0; j < alphabet.length; j++) {
-            const candidate = word.slice(0, i) + alphabet[j] + word.slice(i + 1)
-            if (DICTIONARY.has(candidate)) {
-                suggestions.push(candidate)
-            }
-        }
-    }
-   /* for (let j = 0; j < alphabet.length; j++) {
-        const candidate = word.slice(0, -1) + alphabet[j] + word.slice(-1)
-        if (DICTIONARY.has(candidate)) {
-            suggestions.push(candidate)
-        }
-    }*/
-    return suggestions
-}
+  
 
+    for (let i = 0; i < word.length; i++) {       
+      const candidate = word.slice(0, i) + word.slice(i + 1)
+      if (DICTIONARY.has(candidate)) {
+        suggestions.push(candidate)
+      }
+    }
+  
+
+    for (let i = 0; i < word.length; i++) {       
+      for (let j = 0; j < alphabet.length; j++) {
+        const candidate = word.slice(0, i) + alphabet[j] + word.slice(i + 1)
+        if (DICTIONARY.has(candidate)) {
+          suggestions.push(candidate)
+        }
+      }
+    }
+  
+
+    for (let i = 0; i <= word.length; i++) {       
+      for (let j = 0; j < alphabet.length; j++) {
+        const candidate = word.slice(0, i) + alphabet[j] + word.slice(i)
+        if (DICTIONARY.has(candidate)) {
+          suggestions.push(candidate)
+        }
+      }
+    }
+  
+    return suggestions.filter((value, index, self) => {
+        return self.indexOf(value) === index
+      })
+  }
 module.exports = {
     checkWord,
 }
