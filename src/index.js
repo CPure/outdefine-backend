@@ -30,6 +30,5 @@ app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`)
 })
 app.get('/', (req, res) => {
-
-    return { 'message': "Hello" }
+    res.end('Hello World');
 })
