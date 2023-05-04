@@ -12,20 +12,33 @@ const readDictionary = () => {
 const DICTIONARY = readDictionary()
 
 const checkWord = (word) => {
+    let result = null
+    const regex = /^(?=.*[A-Z])[a-zA-Z]*(?:[a-z][A-Z]|[A-Z][a-z])[a-zA-Z]*$/
+    const isCapitalCaseOrFullUpperCase = !regex.test(word) || word.charAt(0) === word.charAt(0).toUpperCase()
+    if(isCapitalCaseOrFullUpperCase){
+        if (DICTIONARY.has(word.toLowerCase())) {
+            result = { "suggestions": [], "correct": true }
+        }
+        if(hasRepeatingCharacters(word.toLowerCase()) || isMissingVowels(word.toLowerCase())){
+            result = null
+        }
+    }
 
-    if( hasMixedCasing(word)){
-        return null
+    let suggestions
+    if(isCapitalCaseOrFullUpperCase){
+        suggestions = getSuggestions(word.toLowerCase())
+    }else{
+        suggestions = getSuggestions(word)
     }
-    if (DICTIONARY.has(word)) {
-        return { "suggestions": [], "correct": true }
+    
+    if (suggestions?.length > 0 && !result?.correct) {
+        result = { "suggestions": suggestions, "correct": false }
     }
-    const suggestions = getSuggestions(word)
-    if (suggestions.length > 0) {
-        return { "suggestions": suggestions, "correct": false }
+   
+    if( hasMixedCasing(word) ){
+        result = null
     }
-    if(hasRepeatingCharacters(word) || isMissingVowels(word)){
-        return null
-    }
+    return result
 }
 const hasRepeatingCharacters = (word) => {
     if (DICTIONARY.has(word)) {
